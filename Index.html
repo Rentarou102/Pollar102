@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perintis Otaku</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #3b82f6;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-md p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <img src="https://placehold.co/40x40/01004C/FFFFFF?text=PO" alt="Logo Perintis Otaku" class="rounded-lg">
+                <span class="text-2xl font-bold text-gray-800">Perintis Otaku</span>
+            </div>
+            <nav class="hidden md:flex space-x-6 text-gray-600 font-medium">
+                <a href="#" class="hover:text-blue-500 transition-colors">Artikel</a>
+                <a href="#" class="hover:text-blue-500 transition-colors">Anime</a>
+                <a href="#" class="hover:text-blue-500 transition-colors">Manga</a>
+                <a href="#" class="hover:text-blue-500 transition-colors">Karakter</a>
+                <a href="#" class="hover:text-blue-500 transition-colors">Seiyuu & Staf</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <button id="login-btn" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors hidden md:block">Login</button>
+                <input type="text" placeholder="Pencarian" class="hidden md:block border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+        <div id="auth-status" class="container mx-auto mt-2 text-sm text-center text-gray-500">
+            <!-- Status otentikasi akan ditampilkan di sini -->
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Column -->
+        <div class="lg:col-span-2 space-y-8">
+            <!-- Search & Filters -->
+            <div class="bg-white p-4 rounded-xl shadow-md flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
+                <input type="text" placeholder="Anime, Karakter, Pengisi Suara (Seiyuu), Quotes, Artikel" class="w-full md:w-auto flex-grow border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button class="w-full md:w-auto bg-blue-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-600 transition-colors">Cari</button>
+            </div>
+
+            <!-- New Main News Banner -->
+            <section class="bg-white rounded-xl overflow-hidden shadow-md">
+                <img src="https://placehold.co/1000x400/1e293b/ffffff?text=Anime+Banner+Image" alt="Anime Banner" class="w-full h-auto object-cover">
+                <div class="p-6">
+                    <span class="text-sm font-semibold text-blue-600">Anime</span>
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mt-2 mb-2">Chained Soldier Musim 2 Siap Hadir Januari 2026</h2>
+                    <p class="text-gray-600 text-sm">Anime Chained Soldier Musim 2 akan tayang Januari 2026 dengan trailer terbaru, daftar pemeran, dan staf produksi resmi diumumkan.</p>
+                </div>
+            </section>
+
+            <!-- Event & Press Release Section -->
+            <section class="bg-red-700 text-white p-6 rounded-xl shadow-md">
+                <h2 class="text-2xl font-bold mb-4">Event & Press Release</h2>
+                <p class="text-sm opacity-90 mb-6">Dapatkan informasi terbaru tentang event anime, konvensi, dan perilisan resmi.</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="rounded-lg overflow-hidden">
+                        <img src="https://placehold.co/200x120/a1a1aa/ffffff?text=Event+1" alt="Event" class="w-full h-auto object-cover">
+                    </div>
+                    <div class="rounded-lg overflow-hidden">
+                        <img src="https://placehold.co/200x120/a1a1aa/ffffff?text=Event+2" alt="Event" class="w-full h-auto object-cover">
+                    </div>
+                    <div class="rounded-lg overflow-hidden">
+                        <img src="https://placehold.co/200x120/a1a1aa/ffffff?text=Event+3" alt="Event" class="w-full h-auto object-cover">
+                    </div>
+                    <div class="rounded-lg overflow-hidden">
+                        <img src="https://placehold.co/200x120/a1a1aa/ffffff?text=Event+4" alt="Event" class="w-full h-auto object-cover">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Anime Terbaru Section -->
+            <section class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center justify-between">
+                    Anime Terbaru
+                    <button id="add-anime-btn" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-600 transition-colors">Tambah Anime</button>
+                </h2>
+                <div id="anime-list" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <!-- Kartu Anime akan dimuat secara dinamis di sini -->
+                </div>
+            </section>
+
+            <!-- Artikel & Populer Section -->
+            <section class="bg-white p-6 rounded-xl shadow-md">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Kolom Artikel -->
+                    <div class="md:col-span-2">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center justify-between">
+                            Artikel
+                            <div class="flex items-center space-x-2">
+                                <button id="generateArticleButton" class="bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-emerald-600 transition-colors flex items-center space-x-2">
+                                    <span class="text-sm">Ide Artikel ✨</span>
+                                </button>
+                                <button id="add-article-btn" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-600 transition-colors">Tambah Artikel</button>
+                            </div>
+                        </h2>
+                        <div id="article-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Kartu Artikel akan dimuat secara dinamis di sini -->
+                        </div>
+                    </div>
+                    
+                    <!-- Kolom Populer -->
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4">Populer</h2>
+                        <div id="popular-list" class="space-y-4">
+                            <!-- Daftar populer akan dimuat di sini -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Sidebar Column -->
+        <aside class="space-y-8">
+            <!-- Quotes Section -->
+            <section class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Quotes</h2>
+                <div id="quotes-container" class="space-y-4 text-gray-600">
+                    <p class="italic text-sm">"Teks kutipan dari karakter anime."</p>
+                    <p class="text-right font-medium text-sm">- Nama Karakter</p>
+                </div>
+                <hr class="my-4">
+                <button id="generateQuoteButton" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center space-x-2">
+                    <span class="text-sm">Kutipan Ajaib ✨</span>
+                </button>
+            </section>
+
+            <!-- Lain-lain Section -->
+            <section class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Lain-lain</h2>
+                <ul class="space-y-2 text-gray-600">
+                    <li><a href="#" class="hover:text-blue-500 transition-colors">Daftar Seiyuu</a></li>
+                    <li><a href="#" class="hover:text-blue-500 transition-colors">Daftar Karakter</a></li>
+                    <li><a href="#" class="hover:text-blue-500 transition-colors">Tanya Jawab</a></li>
+                </ul>
+            </section>
+        </aside>
+    </main>
+
+    <!-- Modals for adding content -->
+    <div id="article-modal" class="modal">
+        <div class="modal-content">
+            <h3 class="text-2xl font-bold mb-4">Tambah Artikel Baru</h3>
+            <form id="article-form" class="space-y-4">
+                <input type="text" id="article-title" placeholder="Judul Artikel" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <textarea id="article-desc" placeholder="Deskripsi Singkat" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3" required></textarea>
+                <input type="text" id="article-image" placeholder="URL Gambar (Opsional)" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <div class="flex justify-end space-x-2">
+                    <button type="button" id="close-article-modal" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400">Batal</button>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Tambah</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="anime-modal" class="modal">
+        <div class="modal-content">
+            <h3 class="text-2xl font-bold mb-4">Tambah Anime Baru</h3>
+            <form id="anime-form" class="space-y-4">
+                <input type="text" id="anime-title" placeholder="Nama Anime" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <input type="text" id="anime-image" placeholder="URL Gambar Poster (Opsional)" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <div class="flex justify-end space-x-2">
+                    <button type="button" id="close-anime-modal" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400">Batal</button>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Tambah</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="text-center mt-12 mb-4 text-gray-500 text-sm">
+        <p>&copy; 2024 Perintis Otaku. Hak Cipta Dilindungi.</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Variabel global yang disediakan oleh lingkungan kanvas
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // Inisialisasi Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        const authStatusEl = document.getElementById('auth-status');
+        const addArticleBtn = document.getElementById('add-article-btn');
+        const addAnimeBtn = document.getElementById('add-anime-btn');
+        const articleModal = document.getElementById('article-modal');
+        const animeModal = document.getElementById('anime-modal');
+        const closeArticleModalBtn = document.getElementById('close-article-modal');
+        const closeAnimeModalBtn = document.getElementById('close-anime-modal');
+        const articleForm = document.getElementById('article-form');
+        const animeForm = document.getElementById('anime-form');
+        const articleListEl = document.getElementById('article-list');
+        const animeListEl = document.getElementById('anime-list');
+        const popularListEl = document.getElementById('popular-list');
+        const loginBtn = document.getElementById('login-btn'); // Ambil tombol login baru
+        
+        // Logika API Gemini
+        const generateQuoteButton = document.getElementById('generateQuoteButton');
+        const quotesContainer = document.getElementById('quotes-container');
+        const generateArticleButton = document.getElementById('generateArticleButton');
+        
+        async function fetchGeminiQuote() {
+            const prompt = "Berikan kutipan inspiratif pendek dari karakter anime. Sertakan nama karakter dan nama anime. Format dalam JSON, misalnya: {\"quote\": \"...\", \"character\": \"...\", \"anime\": \"...\"}.";
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }],
+                        generationConfig: { responseMimeType: "application/json" }
+                    })
+                });
+                if (!response.ok) throw new Error('Network response was not ok');
+                const result = await response.json();
+                const text = result.candidates[0].content.parts[0].text;
+                return JSON.parse(text);
+            } catch (error) {
+                console.error('Error fetching quote:', error);
+                return null;
+            }
+        }
+        
+        async function fetchGeminiArticleIdea() {
+            const prompt = "Berikan 3 ide judul artikel blog dan deskripsi singkat untuk website tentang anime. Format dalam JSON, misalnya: [{\"title\": \"...\", \"description\": \"...\"}, ...].";
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }],
+                        generationConfig: { responseMimeType: "application/json" }
+                    })
+                });
+                if (!response.ok) throw new Error('Network response was not ok');
+                const result = await response.json();
+                const text = result.candidates[0].content.parts[0].text;
+                return JSON.parse(text);
+            } catch (error) {
+                console.error('Error fetching article ideas:', error);
+                return null;
+            }
+        }
+        
+        generateQuoteButton.addEventListener('click', async () => {
+            quotesContainer.innerHTML = '<div class="flex justify-center items-center"><div class="loading-spinner"></div></div>';
+            const quoteData = await fetchGeminiQuote();
+            if (quoteData) {
+                quotesContainer.innerHTML = `
+                    <p class="italic text-sm">"${quoteData.quote}"</p>
+                    <p class="text-right font-medium text-sm">- ${quoteData.character} (${quoteData.anime})</p>
+                `;
+            } else {
+                quotesContainer.innerHTML = `<p class="text-sm text-red-500">Gagal memuat kutipan. Silakan coba lagi.</p>`;
+            }
+        });
+        
+        generateArticleButton.addEventListener('click', async () => {
+            articleListEl.innerHTML = '<div class="flex justify-center items-center col-span-1 md:col-span-2"><div class="loading-spinner"></div></div>';
+            const articleIdeas = await fetchGeminiArticleIdea();
+            if (articleIdeas) {
+                articleListEl.innerHTML = articleIdeas.map((idea, index) => `
+                    <div class="flex flex-col md:flex-row bg-gray-50 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+                        <img src="https://placehold.co/150x100/d1d5db/000000?text=Artikel+${index + 1}" alt="Artikel Image" class="w-full md:w-1/3 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-800 mb-1">${idea.title}</h3>
+                            <p class="text-sm text-gray-600 mb-2">${idea.description}</p>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                articleListEl.innerHTML = `<p class="col-span-1 md:col-span-2 text-sm text-red-500 text-center">Gagal memuat ide artikel. Silakan coba lagi.</p>`;
+            }
+        });
+
+        // Logika Otentikasi dan Firestore Firebase
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                authStatusEl.textContent = `Anda masuk sebagai: ${user.uid}`;
+                loginBtn.style.display = 'none'; // Sembunyikan tombol login
+                setupFirestoreListeners(user.uid);
+            } else {
+                authStatusEl.textContent = 'Menghubungkan...';
+                loginBtn.style.display = 'block'; // Tampilkan tombol login jika belum terhubung
+                try {
+                    if (initialAuthToken) {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                } catch (error) {
+                    console.error("Firebase Auth Error:", error);
+                    authStatusEl.textContent = `Gagal terhubung: ${error.message}`;
+                }
+            }
+        });
+
+        // Event listener untuk tombol login
+        loginBtn.addEventListener('click', async () => {
+            if (!auth.currentUser) {
+                try {
+                    if (initialAuthToken) {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                } catch (error) {
+                    console.error("Login Error:", error);
+                }
+            }
+        });
+
+        function setupFirestoreListeners(userId) {
+            // Live listener untuk artikel
+            const articlesQuery = query(collection(db, `/artifacts/${appId}/public/data/articles`));
+            onSnapshot(articlesQuery, (snapshot) => {
+                const articles = [];
+                snapshot.forEach(doc => {
+                    articles.push({ id: doc.id, ...doc.data() });
+                });
+                renderArticles(articles);
+                renderPopularArticles(articles); // Render artikel populer juga
+            });
+
+            // Live listener untuk anime
+            const animeQuery = query(collection(db, `/artifacts/${appId}/public/data/anime`));
+            onSnapshot(animeQuery, (snapshot) => {
+                const animeList = [];
+                snapshot.forEach(doc => {
+                    animeList.push({ id: doc.id, ...doc.data() });
+                });
+                renderAnime(animeList);
+            });
+        }
+
+        // Fungsi Render UI
+        function renderArticles(articles) {
+            if (articles.length === 0) {
+                articleListEl.innerHTML = `<p class="col-span-1 md:col-span-2 text-center text-gray-500">Belum ada artikel. Tambahkan yang pertama!</p>`;
+                return;
+            }
+            articleListEl.innerHTML = articles.map(article => `
+                <div class="flex flex-col md:flex-row bg-gray-50 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+                    <img src="${article.image || 'https://placehold.co/150x100/d1d5db/000000?text=Artikel'}" alt="Artikel Image" class="w-full md:w-1/3 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 mb-1">${article.title}</h3>
+                        <p class="text-sm text-gray-600 mb-2">${article.description}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderPopularArticles(articles) {
+            // Urutkan artikel berdasarkan kriteria popularitas (contoh: yang paling baru)
+            const popularArticles = articles.sort((a, b) => b.createdAt.toDate() - a.createdAt.toDate()).slice(0, 5);
+            
+            if (popularArticles.length === 0) {
+                popularListEl.innerHTML = `<p class="text-gray-500 text-center">Belum ada artikel populer.</p>`;
+                return;
+            }
+
+            popularListEl.innerHTML = popularArticles.map(article => `
+                <div class="flex items-start space-x-4">
+                    <img src="${article.image || 'https://placehold.co/80x80/d1d5db/000000?text=Populer'}" alt="Popular Article Image" class="w-20 h-20 rounded-lg object-cover">
+                    <div>
+                        <span class="text-xs font-semibold text-blue-600">Review</span>
+                        <h4 class="text-sm font-semibold text-gray-800">${article.title}</h4>
+                        <p class="text-xs text-gray-500">Beberapa jam yang lalu</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderAnime(animeList) {
+            if (animeList.length === 0) {
+                animeListEl.innerHTML = `<p class="col-span-1 md:col-span-2 text-center text-gray-500">Belum ada anime. Tambahkan yang pertama!</p>`;
+                return;
+            }
+            animeListEl.innerHTML = animeList.map(anime => `
+                <div class="rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 cursor-pointer">
+                    <img src="${anime.image || 'https://placehold.co/150x210/d1d5db/000000?text=Anime'}" alt="Anime Poster" class="w-full h-auto object-cover">
+                    <div class="p-2 bg-gray-50 text-center">
+                        <span class="text-xs font-medium text-gray-700">${anime.title}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Handler Modal dan Formulir
+        addArticleBtn.addEventListener('click', () => {
+            articleModal.style.display = 'flex';
+        });
+
+        closeArticleModalBtn.addEventListener('click', () => {
+            articleModal.style.display = 'none';
+        });
+
+        addAnimeBtn.addEventListener('click', () => {
+            animeModal.style.display = 'flex';
+        });
+
+        closeAnimeModalBtn.addEventListener('click', () => {
+            animeModal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', (event) => {
+            if (event.target === articleModal) {
+                articleModal.style.display = 'none';
+            }
+            if (event.target === animeModal) {
+                animeModal.style.display = 'none';
+            }
+        });
+
+        articleForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('article-title').value;
+            const description = document.getElementById('article-desc').value;
+            const image = document.getElementById('article-image').value;
+
+            try {
+                await addDoc(collection(db, `/artifacts/${appId}/public/data/articles`), {
+                    title,
+                    description,
+                    image,
+                    createdAt: new Date()
+                });
+                articleForm.reset();
+                articleModal.style.display = 'none';
+            } catch (error) {
+                console.error("Error adding article: ", error);
+            }
+        });
+
+        animeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('anime-title').value;
+            const image = document.getElementById('anime-image').value;
+
+            try {
+                await addDoc(collection(db, `/artifacts/${appId}/public/data/anime`), {
+                    title,
+                    image,
+                    createdAt: new Date()
+                });
+                animeForm.reset();
+                animeModal.style.display = 'none';
+            } catch (error) {
+                console.error("Error adding anime: ", error);
+            }
+        });
+
+        // Render awal daftar kosong saat data dimuat
+        renderArticles([]);
+        renderAnime([]);
+    </script>
+</body>
+</html>
